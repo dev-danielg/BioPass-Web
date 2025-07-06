@@ -146,8 +146,8 @@ function listarProdutos() {
     }
 
     Produto.produtosCadastrados.forEach(produto => {
-        const item = document.createElement('li');
-        item.textContent = `${produto.nomeProduto} - R$ ${produto.preco} (${produto.quantidade} unidades) - Vendedor: ${produto.nomeVendedor}`;
-        listaProdutos.appendChild(item);
+        const linha = document.createElement('li');
+        linha.textContent = `${produto.nomeProduto} - R$ ${produto.preco} (${produto.quantidade} unidades) - Vendedor: ${produto.nomeVendedor}`;
+        listaProdutos.appendChild(linha);
     });
 }
