@@ -1,0 +1,138 @@
+class Usuario {
+    static usuariosCadastrados = [];
+
+    constructor(cpf, nome, senha) {
+        this.cpf = cpf
+        this.nome = nome
+        this.senha = senha
+    }
+    getData() {
+        const data = 
+        {
+            cpf: this.cpf, 
+            nome: this.nome, 
+            senha: this.senha
+        } 
+        return data
+    }
+} 
+
+class Produto {
+    static produtosCadastrados = [];
+
+    constructor(cpfVendedor, nomeVendedor, nomeProduto, preco, quantidade, descricao) {
+        this.cpfVendedor = cpfVendedor
+        this.nomeVendedor = nomeVendedor
+        this.nomeProduto = nomeProduto
+        this.preco = preco
+        this.quantidade = quantidade
+        this.descricao = descricao
+    }
+    getData() {
+        const data = 
+        {
+            cpfVendedor: this.cpfVendedor,
+            nomeVendedor: this.nomeVendedor,
+            nomeProduto: this.nomeProduto,
+            preco: this.preco,
+            quantidade: this.quantidade,
+            descricao: this.descricao
+        }
+        return data
+    }
+}
+
+
+function cadastrarUsuario() {
+    const cpfInput = document.getElementById('cpf');
+    const nomeInput = document.getElementById('nome');
+    const senhaInput = document.getElementById('senha');
+
+    const cpf = cpfInput.value.replace(/\D/g, '').trim();
+    const nome = nomeInput.value.trim();
+    const senha = senhaInput.value.trim();
+
+    if (!senha || !nome || !cpf) {
+        alert('Os campos de senha e nome devem ser preenchidos.')
+        return
+    }
+    if (cpf.length !== 11) {
+        alert('O CPF deve conter 11 dígitos.')
+        return
+    }
+    if (Usuario.usuariosCadastrados.some(usuario => usuario.cpf === cpf)) {
+        alert('Já existe um usuário cadastrado com este CPF.')
+        return
+    }
+    const usuario = new Usuario(cpf, nome, senha)
+    Usuario.usuariosCadastrados.push(usuario.getData())
+    alert('Usuário cadastrado com sucesso!')
+    
+    cpfInput.value = ''
+    nomeInput.value = ''
+    senhaInput.value = ''
+} 
+
+function cadastrarProduto() {
+    const cpfVendedorInput = document.getElementById('cpfVendedor');
+    const nomeVendedorInput = document.getElementById('nomeVendedor');
+    const nomeProdutoInput = document.getElementById('nomeProduto');
+    const precoInput = document.getElementById('preco');
+    const quantidadeInput = document.getElementById('quantidade');
+    const descricaoInput = document.getElementById('descricao');
+
+    const cpfVendedor = cpfVendedorInput.value.replace(/\D/g, '').trim();
+    const nomeVendedor = nomeVendedorInput.value.trim();
+    const nomeProduto = nomeProdutoInput.value.trim();
+    const preco = parseFloat(precoInput.value);
+    const quantidade = parseInt(quantidadeInput.value);
+    const descricao = descricaoInput.value.trim();
+
+    if (!cpfVendedor || !nomeVendedor || !nomeProduto || isNaN(preco) || isNaN(quantidade) || !descricao) {
+        alert('Todos os campos devem ser preenchidos corretamente.')
+        return
+    }
+    
+    if (quantidade <= 0) {
+        alert('A quantidade deve ser maior que zero.')
+        return
+    }
+    if (preco <= 0) {
+        alert('O preço deve ser maior que zero.')
+        return
+    }
+    if (Produto.produtosCadastrados.some(produto => produto.cpfVendedor === cpfVendedor)) {
+        alert('Já existe um produto cadastrado com este CPF.')
+        return
+    }
+    const produto = new Produto(cpfVendedor, nomeVendedor, nomeProduto, preco, quantidade, descricao)
+    Produto.produtosCadastrados.push(produto.getData())
+    alert('Produto cadastrado com sucesso!')
+    cpfVendedorInput.value = ''
+    nomeVendedorInput.value = ''
+    nomeProdutoInput.value = ''
+    precoInput.value = ''
+    quantidadeInput.value = ''
+    descricaoInput.value = ''
+    
+}
+
+function loginUsuario() {
+    const cpfInput = document.getElementById('cpfLogin'); 
+    const senhaInput = document.getElementById('senhaLogin');
+
+    const cpf = cpfInput.value.replace(/\D/g, '').trim();
+    const senha = senhaInput.value.trim();
+    if (!senha || !cpf) {
+        alert('Os campos de senha e CPF devem ser preenchidos.')
+        return
+    }
+    const usuario = Usuario.usuariosCadastrados.find(usuario => usuario.cpf === cpf && usuario.senha === senha);
+    if (usuario) {
+        alert(`Bem-vindo, ${usuario.nome}!`);
+        cpfInput.value = '';
+        senhaInput.value = '';
+    } else {
+        alert('CPF ou senha incorretos.');
+    }  
+}
