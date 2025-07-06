@@ -19,7 +19,7 @@ class Usuario {
 
 class Produto {
     static produtosCadastrados = [];
-
+    
     constructor(cpfVendedor, nomeVendedor, nomeProduto, preco, quantidade, descricao) {
         this.cpfVendedor = cpfVendedor
         this.nomeVendedor = nomeVendedor
@@ -68,9 +68,9 @@ function cadastrarUsuario() {
     Usuario.usuariosCadastrados.push(usuario.getData())
     alert('Usuário cadastrado com sucesso!')
     
-    cpfInput.value = ''
-    nomeInput.value = ''
-    senhaInput.value = ''
+    cpfInput.value = '';
+    nomeInput.value = '';
+    senhaInput.value = '';
 } 
 
 function cadastrarProduto() {
@@ -135,4 +135,19 @@ function loginUsuario() {
     } else {
         alert('CPF ou senha incorretos.');
     }  
+}
+
+function listarProdutos() {
+    const listaProdutos = document.getElementById('listaProdutos');
+    listaProdutos.innerHTML = '';
+    if (Produto.produtosCadastrados.length === 0) {
+        listaProdutos.innerHTML = '<p>Nenhum produto cadastrado.</p>';
+        return;
+    }
+
+    Produto.produtosCadastrados.forEach(produto => {
+        const item = document.createElement('li');
+        item.textContent = `${produto.nomeProduto} - R$ ${produto.preco} (${produto.quantidade} unidades) - Vendedor: ${produto.nomeVendedor}`;
+        listaProdutos.appendChild(item);
+    });
 }
