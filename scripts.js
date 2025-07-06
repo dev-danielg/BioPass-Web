@@ -1,6 +1,9 @@
 class Usuario {
     static usuariosCadastrados = [];
-
+    static usuarioLogado = null;
+    static getUsuarioLogado() {
+        return this.usuarioLogado;
+    }
     constructor(cpf, nome, senha) {
         this.cpf = cpf
         this.nome = nome
@@ -19,7 +22,7 @@ class Usuario {
 
 class Produto {
     static produtosCadastrados = [];
-    
+
     constructor(cpfVendedor, nomeVendedor, nomeProduto, preco, quantidade, descricao) {
         this.cpfVendedor = cpfVendedor
         this.nomeVendedor = nomeVendedor
@@ -68,27 +71,25 @@ function cadastrarUsuario() {
     Usuario.usuariosCadastrados.push(usuario.getData())
     alert('Usuário cadastrado com sucesso!')
     
-    cpfInput.value = '';
-    nomeInput.value = '';
-    senhaInput.value = '';
+    cpfInput.value = ''
+    nomeInput.value = ''
+    senhaInput.value = ''
 } 
 
 function cadastrarProduto() {
-    const cpfVendedorInput = document.getElementById('cpfVendedor');
     const nomeVendedorInput = document.getElementById('nomeVendedor');
     const nomeProdutoInput = document.getElementById('nomeProduto');
     const precoInput = document.getElementById('preco');
     const quantidadeInput = document.getElementById('quantidade');
     const descricaoInput = document.getElementById('descricao');
 
-    const cpfVendedor = cpfVendedorInput.value.replace(/\D/g, '').trim();
     const nomeVendedor = nomeVendedorInput.value.trim();
     const nomeProduto = nomeProdutoInput.value.trim();
     const preco = parseFloat(precoInput.value);
     const quantidade = parseInt(quantidadeInput.value);
     const descricao = descricaoInput.value.trim();
 
-    if (!cpfVendedor || !nomeVendedor || !nomeProduto || isNaN(preco) || isNaN(quantidade) || !descricao) {
+    if (!nomeVendedor || !nomeProduto || isNaN(preco) || isNaN(quantidade) || !descricao) {
         alert('Todos os campos devem ser preenchidos corretamente.')
         return
     }
@@ -101,14 +102,9 @@ function cadastrarProduto() {
         alert('O preço deve ser maior que zero.')
         return
     }
-    if (Produto.produtosCadastrados.some(produto => produto.cpfVendedor === cpfVendedor)) {
-        alert('Já existe um produto cadastrado com este CPF.')
-        return
-    }
-    const produto = new Produto(cpfVendedor, nomeVendedor, nomeProduto, preco, quantidade, descricao)
+    const produto = new Produto(Usuario.usuarioLogado.cpf, nomeVendedor, nomeProduto, preco, quantidade, descricao)
     Produto.produtosCadastrados.push(produto.getData())
     alert('Produto cadastrado com sucesso!')
-    cpfVendedorInput.value = ''
     nomeVendedorInput.value = ''
     nomeProdutoInput.value = ''
     precoInput.value = ''
@@ -132,6 +128,7 @@ function loginUsuario() {
         alert(`Bem-vindo, ${usuario.nome}!`);
         cpfInput.value = '';
         senhaInput.value = '';
+        Usuario.usuarioLogado = usuario;
     } else {
         alert('CPF ou senha incorretos.');
     }  
@@ -150,4 +147,32 @@ function listarProdutos() {
         linha.textContent = `${produto.nomeProduto} - R$ ${produto.preco} (${produto.quantidade} unidades) - Vendedor: ${produto.nomeVendedor}`;
         listaProdutos.appendChild(linha);
     });
+}
+
+function logoutUsuario() {
+    Usuario.usuarioLogado = null;
+    alert('Usuário desconectado com sucesso!');
+    const listaProdutos = document.getElementById('listaProdutos');
+    listaProdutos.innerHTML = '';
+
+    const cpfInput = document.getElementById('cpfLogin'); 
+    const senhaInput = document.getElementById('senhaLogin');
+
+    cpfInput.value = '';
+    senhaInput.value = '';
+
+    const nomeVendedorInput = document.getElementById('nomeVendedor');
+    nomeVendedorInput.value = ''; 
+
+    const nomeProdutoInput = document.getElementById('nomeProduto');
+    nomeProdutoInput.value = ''; 
+
+    const precoInput = document.getElementById('preco');
+    precoInput.value = '';
+
+    const quantidadeInput = document.getElementById('quantidade');
+    quantidadeInput.value = '';
+
+    const descricaoInput = document.getElementById('descricao');
+    descricaoInput.value = '';
 }
