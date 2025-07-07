@@ -1,1 +1,39 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #e8f5e9;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.tela {
+  display: none;
+  padding: 30px;
+}
+
+.tela input, .tela textarea {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 80%;
+  max-width: 300px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #388e3c;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
 
