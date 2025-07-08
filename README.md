@@ -74,9 +74,9 @@ O design é simples e responsivo, com foco na usabilidade:
 
 ## Team
 
-Arthur Alexandre
-Daniel Gonçalves
-Júlio Augusto
-Wesley Telles
-Ludmilla Arlane
-Marcelo Bezerra
+- Arthur Alexandre
+- Daniel Gonçalves
+- Júlio Augusto
+- Wesley Telles
+- Ludmilla Arlane
+- Marcelo Bezerra
