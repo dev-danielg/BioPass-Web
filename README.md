@@ -33,7 +33,7 @@ BioPass é uma plataforma que conecta consumidores conscientes a vendedores de p
 
 ## Como Usar
 
-1. Vá para o GitHub Pages (canto esquerdo).
+1. Clique em Deployments (canto esquerdo).
 2. Abra o link correspondente ao site do projeto.
 3. Navegue pelas telas utilizando os botões disponíveis.
 
