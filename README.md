@@ -71,3 +71,12 @@ A validação de CPF segue as regras oficiais:
 O design é simples e responsivo, com foco na usabilidade:
 - Botões com cores amigáveis e feedback visual ao passar o mouse.
 - Campos de entrada centralizados e de fácil acesso.
+
+## Team
+
+Arthur Alexandre
+Daniel Gonçalves
+Júlio Augusto
+Wesley Telles
+Ludmilla Arlane
+Marcelo Bezerra
