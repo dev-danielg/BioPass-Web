@@ -1,178 +1,192 @@
 class Usuario {
-    static usuariosCadastrados = [];
-    static usuarioLogado = null;
-    static getUsuarioLogado() {
-        return this.usuarioLogado;
-    }
     constructor(cpf, nome, senha) {
-        this.cpf = cpf
-        this.nome = nome
-        this.senha = senha
+      this.cpf = cpf;
+      this.nome = nome;
+      this.senha = senha;
     }
-    getData() {
-        const data = 
-        {
-            cpf: this.cpf, 
-            nome: this.nome, 
-            senha: this.senha
-        } 
-        return data
+  
+    fazerLogin(cpf, senha) {
+      return this.cpf === cpf && this.senha === senha;
     }
-} 
-
-class Produto {
-    static produtosCadastrados = [];
-
-    constructor(cpfVendedor, nomeVendedor, nomeProduto, preco, quantidade, descricao) {
-        this.cpfVendedor = cpfVendedor
-        this.nomeVendedor = nomeVendedor
-        this.nomeProduto = nomeProduto
-        this.preco = preco
-        this.quantidade = quantidade
-        this.descricao = descricao
+  }
+  
+  class Produto {
+    constructor(nomeVendedor, nomeProduto, preco, quantidade, descricao, link) {
+      this.nomeVendedor = nomeVendedor;
+      this.nomeProduto = nomeProduto;
+      this.preco = preco;
+      this.quantidade = quantidade;
+      this.descricao = descricao;
+      this.link = link;
     }
-    getData() {
-        const data = 
-        {
-            cpfVendedor: this.cpfVendedor,
-            nomeVendedor: this.nomeVendedor,
-            nomeProduto: this.nomeProduto,
-            preco: this.preco,
-            quantidade: this.quantidade,
-            descricao: this.descricao
-        }
-        return data
+  }
+  
+  class Depoimento {
+    constructor(autor, texto) {
+      this.autor = autor;
+      this.texto = texto;
     }
-}
-
-
-function cadastrarUsuario() {
-    const cpfInput = document.getElementById('cpf');
-    const nomeInput = document.getElementById('nome');
-    const senhaInput = document.getElementById('senha');
-
-    const cpf = cpfInput.value.replace(/\D/g, '').trim();
-    const nome = nomeInput.value.trim();
-    const senha = senhaInput.value.trim();
-
-    if (!senha || !nome || !cpf) {
-        alert('Os campos de senha e nome devem ser preenchidos.')
-        return
+  
+    textoCompleto() {
+      return `${this.autor} disse: ${this.texto}`;
     }
-    if (cpf.length !== 11) {
-        alert('O CPF deve conter 11 dígitos.')
-        return
+  }
+  
+  let usuarios = [];
+  let usuarioLogado = null;
+  let produtos = [];
+  let depoimentos = [];
+  
+  function mostrarTela(nome) {
+    let telas = document.getElementsByClassName('tela');
+    for (let i = 0; i < telas.length; i++) {
+      telas[i].style.display = 'none';
     }
-    if (Usuario.usuariosCadastrados.some(usuario => usuario.cpf === cpf)) {
-        alert('Já existe um usuário cadastrado com este CPF.')
-        return
-    }
-    const usuario = new Usuario(cpf, nome, senha)
-    Usuario.usuariosCadastrados.push(usuario.getData())
-    alert('Usuário cadastrado com sucesso!')
+    document.getElementById(nome).style.display = 'block';
+  }
+  
+  mostrarTela('tela-inicial');
+  
+  function cadastrarUsuario() {
+    let cpf = document.getElementById('cpf').value.trim();
+    let nome = document.getElementById('nome').value.trim();
+    let senha = document.getElementById('senha').value.trim();
     
-    cpfInput.value = ''
-    nomeInput.value = ''
-    senhaInput.value = ''
-} 
-
-function cadastrarProduto() {
-    const nomeVendedorInput = document.getElementById('nomeVendedor');
-    const nomeProdutoInput = document.getElementById('nomeProduto');
-    const precoInput = document.getElementById('preco');
-    const quantidadeInput = document.getElementById('quantidade');
-    const descricaoInput = document.getElementById('descricao');
-
-    const nomeVendedor = nomeVendedorInput.value.trim();
-    const nomeProduto = nomeProdutoInput.value.trim();
-    const preco = parseFloat(precoInput.value);
-    const quantidade = parseInt(quantidadeInput.value);
-    const descricao = descricaoInput.value.trim();
-
-    if (!nomeVendedor || !nomeProduto || isNaN(preco) || isNaN(quantidade) || !descricao) {
-        alert('Todos os campos devem ser preenchidos corretamente.')
-        return
+    if (!cpf || !nome || !senha) {
+      alert('Preencha todos os campos corretamente.');
+      return;
     }
-    
-    if (quantidade <= 0) {
-        alert('A quantidade deve ser maior que zero.')
-        return
-    }
-    if (preco <= 0) {
-        alert('O preço deve ser maior que zero.')
-        return
-    }
-    const produto = new Produto(Usuario.usuarioLogado.cpf, nomeVendedor, nomeProduto, preco, quantidade, descricao)
-    Produto.produtosCadastrados.push(produto.getData())
-    alert('Produto cadastrado com sucesso!')
-    nomeVendedorInput.value = ''
-    nomeProdutoInput.value = ''
-    precoInput.value = ''
-    quantidadeInput.value = ''
-    descricaoInput.value = ''
-    
-}
-
-function loginUsuario() {
-    const cpfInput = document.getElementById('cpfLogin'); 
-    const senhaInput = document.getElementById('senhaLogin');
-
-    const cpf = cpfInput.value.replace(/\D/g, '').trim();
-    const senha = senhaInput.value.trim();
-    if (!senha || !cpf) {
-        alert('Os campos de senha e CPF devem ser preenchidos.')
-        return
-    }
-    const usuario = Usuario.usuariosCadastrados.find(usuario => usuario.cpf === cpf && usuario.senha === senha);
-    if (usuario) {
-        alert(`Bem-vindo, ${usuario.nome}!`);
-        cpfInput.value = '';
-        senhaInput.value = '';
-        Usuario.usuarioLogado = usuario;
-    } else {
-        alert('CPF ou senha incorretos.');
-    }  
-}
-
-function listarProdutos() {
-    const listaProdutos = document.getElementById('listaProdutos');
-    listaProdutos.innerHTML = '';
-    if (Produto.produtosCadastrados.length === 0) {
-        listaProdutos.innerHTML = '<p>Nenhum produto cadastrado.</p>';
+    else {
+      const validacaoCPF = verificarCPF(cpf);
+      if (validacaoCPF === false) {
+        alert('CPF inválido.');
         return;
+      }
+    
+    for (let i = 0; i < usuarios.length; i++) {
+      if (usuarios[i].cpf === cpf) {
+        alert('CPF já cadastrado.');
+        return;
+      }}
+    }
+  
+    let novoUsuario = new Usuario(cpf, nome, senha);
+    usuarios.push(novoUsuario);
+    alert('Cadastro feito!');
+    mostrarTela('tela-login');
+  }
+
+  function loginUsuario() {
+    let cpf = document.getElementById('cpfLogin').value.trim();
+    let senha = document.getElementById('senhaLogin').value.trim();
+  
+    for (let i = 0; i < usuarios.length; i++) {
+      if (usuarios[i].fazerLogin(cpf, senha)) {
+        usuarioLogado = usuarios[i];
+        alert('Login realizado com sucesso.');
+        alert(`Seja bem vindo ${usuarioLogado.nome}!`)
+        mostrarTela('tela-menu');
+        return;
+      }
+    }
+  
+    alert('CPF ou senha errados.');
+  }
+  
+  function logoutUsuario() {
+    usuarioLogado = null;
+    alert('Você saiu da conta.');
+    mostrarTela('tela-inicial');
+  }
+  
+  function cadastrarProduto() {
+    let nomeVendedor = document.getElementById('nomeVendedor').value.trim();
+    let nomeProduto = document.getElementById('nomeProduto').value.trim();
+    let preco = document.getElementById('preco').value.trim();
+    let quantidade = document.getElementById('quantidade').value.trim();
+    let descricao = document.getElementById('descricao').value.trim();
+    let link = document.getElementById('linkProduto').value.trim();
+  
+    if (nomeVendedor === '' || nomeProduto === '' || preco === '' || quantidade === '' || descricao === '') {
+      alert('Preencha todos os campos.');
+      return;
+    }
+  
+    let novoProduto = new Produto(nomeVendedor, nomeProduto, preco, quantidade, descricao, link);
+    produtos.push(novoProduto);
+    alert('Produto cadastrado!');
+    mostrarTela('tela-menu');
+  }
+  
+  function listarProdutos() {
+    let lista = document.getElementById('listaProdutos');
+    lista.innerHTML = '';
+    for (let i = 0; i < produtos.length; i++) {
+      let item = produtos[i];
+      let li = document.createElement('li');
+      li.textContent = `${item.nomeProduto} - R$ ${item.preco} - ${item.quantidade} un - Vendedor: ${item.nomeVendedor} - Link: ${item.link}`;
+      lista.appendChild(li);
+    }
+    mostrarTela('tela-produtos');
+  }
+  
+  function adicionarDepoimento() {
+    let texto = document.getElementById('textoDepoimento').value.trim();
+    if (texto === '') {
+      alert('Digite seu depoimento.');
+      return;
+    }
+  
+    if (!usuarioLogado) {
+      alert('Você precisa estar logado para enviar depoimentos.');
+      return;
+    }
+  
+    let novoDepoimento = new Depoimento(usuarioLogado.nome, texto);
+    depoimentos.push(novoDepoimento);
+    document.getElementById('textoDepoimento').value = '';
+    atualizarDepoimentos();
+  }
+  
+  function atualizarDepoimentos() {
+    let lista = document.getElementById('listaDepoimentos');
+    lista.innerHTML = '';
+    for (let i = 0; i < depoimentos.length; i++) {
+      let li = document.createElement('li');
+      li.textContent = depoimentos[i].textoCompleto();
+      lista.appendChild(li);
+    }
+  }
+
+function verificarCPF(cpf) {
+    cpf = cpf.replace(/\D/g, '')
+
+    if (cpf.length !== 11) {
+      return false
     }
 
-    Produto.produtosCadastrados.forEach(produto => {
-        const linha = document.createElement('li');
-        linha.textContent = `${produto.nomeProduto} - R$ ${produto.preco} (${produto.quantidade} unidades) - Vendedor: ${produto.nomeVendedor}`;
-        listaProdutos.appendChild(linha);
-    });
-}
+    function calcularDigito(cpf, digito=1) {
+      let multiplicadores = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+      multiplicadores = digito == 1 ? multiplicadores.slice(1) : multiplicadores
+      let somatorio = 0;
 
-function logoutUsuario() {
-    Usuario.usuarioLogado = null;
-    alert('Usuário desconectado com sucesso!');
-    const listaProdutos = document.getElementById('listaProdutos');
-    listaProdutos.innerHTML = '';
+      multiplicadores.forEach((multiplicador, indice) => {
+        somatorio = somatorio + parseInt(cpf[indice]) * multiplicador
+        });
 
-    const cpfInput = document.getElementById('cpfLogin'); 
-    const senhaInput = document.getElementById('senhaLogin');
+      let restoDigito = somatorio % 11;
+      restoDigito = restoDigito == 10 ? 0: restoDigito;
+      return restoDigito;
+    }
 
-    cpfInput.value = '';
-    senhaInput.value = '';
-
-    const nomeVendedorInput = document.getElementById('nomeVendedor');
-    nomeVendedorInput.value = ''; 
-
-    const nomeProdutoInput = document.getElementById('nomeProduto');
-    nomeProdutoInput.value = ''; 
-
-    const precoInput = document.getElementById('preco');
-    precoInput.value = '';
-
-    const quantidadeInput = document.getElementById('quantidade');
-    quantidadeInput.value = '';
-
-    const descricaoInput = document.getElementById('descricao');
-    descricaoInput.value = '';
+    const primeiroDigito = calcularDigito(cpf, 1);
+    const segundoDigito = calcularDigito(cpf, 2);
+    const dvInformado = cpf.slice(9);
+    const dvCalculado = `${primeiroDigito}${segundoDigito}`;
+    if (dvInformado == dvCalculado) {
+        return true
+    }
+    else {
+        return false
+    }
 }
