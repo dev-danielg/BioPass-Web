@@ -1,1 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>BioPass</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
+  <div id="tela-inicial" class="tela">
+    <h1>BioPass</h1>
+    <p>Seu marketplace de produtos sustentáveis</p>
+    <button onclick="mostrarTela('tela-cadastro')">Cadastrar</button>
+    <button onclick="mostrarTela('tela-login')">Login</button>
+    <button onclick="mostrarTela('tela-sobre')">Sobre Nós</button>
+  </div>
+
+  <div id="tela-cadastro" class="tela">
+    <h2>Cadastro</h2>
+    <input id="cpf" placeholder="CPF">
+    <input id="nome" placeholder="Nome">
+    <input id="senha" type="password" placeholder="Senha">
+    <button onclick="cadastrarUsuario()">Cadastrar</button>
+    <button onclick="mostrarTela('tela-inicial')">Voltar</button>
+  </div>
+
+  <div id="tela-login" class="tela">
+    <h2>Login</h2>
+    <input id="cpfLogin" placeholder="CPF">
+    <input id="senhaLogin" type="password" placeholder="Senha">
+    <button onclick="loginUsuario()">Entrar</button>
+    <button onclick="mostrarTela('tela-inicial')">Voltar</button>
+  </div>
+
+  <div id="tela-menu" class="tela">
+    <h2>Menu Principal</h2>
+     <button onclick="listarProdutos()">Ver Produtos</button>
+    <button onclick="mostrarTela('tela-cadastrar-produto')">Cadastrar Produto</button>
+    <button onclick="mostrarTela('tela-depoimentos')">Depoimentos</button>
+    <button onclick="logoutUsuario()">Sair</button>
+  </div>
+
+  <div id="tela-produtos" class="tela">
+    <h2>Produtos Cadastrados</h2>
+    <ul id="listaProdutos"></ul>
+    <button onclick="mostrarTela('tela-menu')">Voltar</button>
+  </div>
+
+  <div id="tela-cadastrar-produto" class="tela">
+    <h2>Cadastrar Produto</h2>
+    <input id="nomeVendedor" placeholder="Seu nome">
+    <input id="nomeProduto" placeholder="Nome do produto">
+    <input id="preco" placeholder="Preço">
+    <input id="quantidade" placeholder="Quantidade">
+    <input id="descricao" placeholder="Descrição">
+    <input id="linkProduto" placeholder="Link do produto (fictício)">
+    <button onclick="cadastrarProduto()">Cadastrar</button>
+    <button onclick="mostrarTela('tela-menu')">Voltar</button>
+  </div>
+
+  <div id="tela-depoimentos" class="tela">
+    <h2>Depoimentos</h2>
+    <textarea id="textoDepoimento" placeholder="Deixe seu depoimento aqui"></textarea>
+    <button onclick="adicionarDepoimento()">Enviar</button>
+    <ul id="listaDepoimentos"></ul>
+    <button onclick="mostrarTela('tela-menu')">Voltar</button>
+  </div>
+
+  <div id="tela-sobre" class="tela">
+    <h2>Sobre a BioPass</h2>
+    <p>A BioPass é uma plataforma que conecta consumidores conscientes a vendedores de produtos sustentáveis.</p>
+    <p>Nosso objetivo é facilitar o acesso a produtos ecológicos e apoiar pequenos produtores.</p>
+    <button onclick="mostrarTela('tela-inicial')">Voltar</button>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
